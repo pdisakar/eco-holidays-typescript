@@ -1,0 +1,190 @@
+.package-availability-table.featured {
+  @apply bg-white;
+  @apply shadow-base p-6 lg:p-10;
+  .package-title {
+    h3 {
+      margin: 0;
+      @apply font-medium;
+      @apply text-[1.125rem];
+      a {
+        text-decoration: none;
+        @apply text-headings;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(transparent 20px, #172541 20px);
+        transition: background-size 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0s;
+        background-size: 0;
+        background-position: 0 -1px;
+      }
+      &:hover{
+        a{
+          background-size: 100%;
+        }
+      }
+    }
+  }
+  .table {
+    margin-bottom: 0;
+    width: 100%;
+    & > :not(:last-child) > :last-child > * {
+      @apply border-border;
+    }
+    th {
+      padding-top: 0 !important;
+      text-align: left;
+      padding-bottom: 10px !important;
+      @apply text-muted uppercase text-xs font-bold;
+    }
+  }
+
+  .text,
+  .sub-text {
+    display: block;
+    line-height: 1.4;
+    text-transform: capitalize;
+    //letter-spacing: .02em;
+  }
+  .text {
+    @apply font-semibold text-md text-headings;
+  }
+  .sub-text {
+    @apply text-headings/80 text-xs font-medium;
+  }
+  .price {
+    .text {
+      @apply text-secondary font-secondary text-base font-semibold;
+    }
+  }
+  .availability {
+    position: relative;
+    padding-left: 25px;
+    i {
+      position: absolute;
+      left: 0;
+      height: 16px;
+      width: 16px;
+      font-size: 0;
+      top: 3px;
+
+      &.warning {
+        @apply text-warning;
+      }
+      &.danger {
+        @apply text-danger;
+      }
+      &.success {
+        @apply text-success;
+      }
+    }
+  }
+
+  .price {
+    i.strike {
+      font-style: normal;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    .btn {
+      white-space: nowrap;
+      &.btn-sm {
+        padding: 4px 15px;
+        text-transform: uppercase;
+        font-weight: 500;
+        border-width: 2px;
+        min-width: 120px;
+        @apply text-sm;
+      }
+      &.btn-md {
+        padding: 5px 24px;
+        border-radius: 50rem;
+        border-width: 2px;
+        font-weight: 500;
+        @apply text-headings border-border text-xs;
+        &:hover,
+        &:focus {
+          @apply text-white border-primary;
+        }
+      }
+    }
+    .highlight-text {
+      @apply bg-success/20 text-success text-xxs;
+      padding: 2px 10px;
+      border-radius: 4px;
+      min-width: 120px;
+      text-align: center;
+    }
+  }
+  .table > :not(caption) > * > * {
+    @apply py-5;
+    &:first-child {
+        @apply pl-0;
+    }
+    &:first-child {
+        @apply pr-0;
+    }
+  }
+  .table {
+    td,
+    th {
+      &:not(:first-child) {
+        padding-left: 12px;
+      }
+      &:not(:last-child) {
+        padding-right: 12px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      @apply border-t border-t-border;
+      &:last-child {
+        > td {
+          padding-bottom: 0;
+          border-bottom: none medium;
+        }
+      }
+    }
+  }
+  // @include media-breakpoint-down(lg) {
+  //   padding: 0;
+  //   box-shadow: none;
+  //   background-color: transparent;
+  //   .table {
+  //     thead {
+  //       display: none;
+  //     }
+  //     tbody {
+  //       @apply pb-1.5 flex justify-center flex-wrap gap-y-1 gap-x-[1%];
+  //       tr {
+  //         @apply bg-white shadow-base border-t border-t-secondary flex gap-2.5 flex-wrap p-3 rounded flex-[0_0_49.5%] max-w-[49.5%];
+  //         td {
+  //           width: 100%;
+  //           padding-left: 0;
+  //           padding-right: 0;
+  //           > div {
+  //             width: 100%;
+  //           }
+  //           &:first-child {
+  //             padding-top: 0;
+  //           }
+  //           &:last-child {
+  //             padding-bottom: 0;
+  //           }
+  //           &:not(:first-child) {
+  //             padding-top: 5px;
+  //             padding-left: 0;
+  //           }
+  //           &:not(:last-child) {
+  //             padding-bottom: 5px;
+  //             padding-right: 0;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+}

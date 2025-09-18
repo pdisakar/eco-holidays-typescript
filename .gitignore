@@ -1,0 +1,16 @@
+# Ignore .DS_Store files created by macOS
+.DS_Store
+
+# Ignore the node_modules directory
+node_modules/
+
+# Ignore log files created by the application
+logs/
+
+.history/
+.next/
+
+package-lock.json
+
+# Ignore .env files containing environment variables
+.vercel

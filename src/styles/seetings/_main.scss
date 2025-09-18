@@ -1,0 +1,167 @@
+
+@use "sass:map";
+@use "sass:color";
+
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+// fusv-disable
+$grays: (
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+) !default;
+
+
+// fusv-enable
+$blue:    #212052 !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #d63384 !default;
+$red:     #f10606 !default;
+$orange:  #f3893b !default;
+$yellow:  #ffab53 !default;
+$green:   #1cb386 !default;
+$teal:    #0b3c5d !default;
+$cyan:    #0cb6d8 !default;
+
+
+// Brands colors
+$facebook:      #3b5999;
+$twitter:       #14171A;
+$google:        #DB4337;
+$instagram:     #e4405f;
+$pinterest:     #bd081c;
+$youtube:       #cd201f;
+$linkedin:      #0e76a8;
+// Brand colors
+$brand-colors: ();
+$brand-colors: map.merge((
+  "facebook":     $facebook,
+  "twitter":      $twitter,
+  "google":       $google,
+  "instagram":    $instagram,
+  "pinterest":    $pinterest,
+  "youtube":      $youtube,
+  "linkedin":     $linkedin
+), $brand-colors);
+
+
+
+// scss-docs-start colors-map
+$colors: (
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800,
+  "facebook":     $facebook,
+  "twitter":      $twitter,
+  "google":       $google,
+  "instagram":    $instagram,
+  "pinterest":    $pinterest,
+  "youtube":      $youtube,
+  "linkedin":     $linkedin
+) !default;
+// scss-docs-end colors-map
+
+$primary:       $teal !default;
+$secondary:     $cyan !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $orange !default;
+$danger:        $red !default;
+$light:         #f3f4f8 !default;
+$dark:          $gray-900 !default;
+$body-color:    #012C3F !default;
+$headings-color: #01354D !default;
+
+// scss-docs-start theme-colors-map
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark,
+  "facebook":     $facebook,
+  "twitter":      $twitter,
+  "google":       $google,
+  "instagram":    $instagram,
+  "pinterest":    $pinterest,
+  "youtube":      $youtube,
+  "linkedin":     $linkedin
+) !default;
+// scss-docs-end theme-colors-map
+
+
+// global spacing 
+$global-top-space:    4.0625rem;
+$global-bottom-space: 4.0625rem;
+$global-space:        3.4375rem;
+$global-md-space:     3.125rem;
+$global-sm-space:     2.8125rem;
+$global-xs-space:     2.5rem;
+
+
+//header default
+$header-height:            3.125rem;
+$header-sticky-height:     3.125rem;
+$header-sm-height:         $header-sticky-height;
+$header-icon-font-size:    1.25rem;
+
+//navigation
+$navigation-font-family:      var(--primary);
+$navigation-font-size:        .875rem;
+$navigation-letter-spacing:   0.2px;
+$navigation-font-weight:      600 !default;
+$navbar-margin-bottom:        0 !default;
+$navbar-border-radius:        0 !default;
+
+
+//Top Bar
+$top-bar-bg:                transparent; //radial-gradient(circle, darken($primary, 3%), $brand-primary);
+$top-bar-color:             $white;
+$top-bar-height:            45px;
+$top-bar-font-size:         .8375rem;
+$top-bar-border-color:      rgba($top-bar-color, .2);
+$top-bar-link-color:        $top-bar-color;
+$top-bar-link-hover-color:  $white;
+
+//Footer
+$footer-font-size:          1rem;
+$footer-bg:                 $light;
+$footer-text-color:         $body-color;
+$footer-headings-color:     white;
+$footer-link-color:         $footer-text-color;
+$footer-link-hover-color:   $secondary;
+
+//slide menu
+$canvas-sidebar-bg:               $white;
+$canvas-sidebar-text-color:       $body-color;
+$canvas-sidebar-headings-color:   $headings-color;

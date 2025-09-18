@@ -1,0 +1,9 @@
+@use '../seetings/main' as *;
+#footer {
+  color: $footer-text-color;
+  font-size: $footer-font-size;
+  background-color: $footer-bg;
+  background-size: cover;
+  overflow: hidden;
+}
+
