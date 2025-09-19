@@ -1,12 +1,10 @@
-import DepartureTrips from "@/components/DepartureTrips";
-import { BASE_URL } from "@/lib/constants";
-import { Media, UrlInfo } from "@/types";
-import dynamic from "next/dynamic";
-const PageBanner = dynamic(() => import("../../Banners/PageBanner"));
-const Breadcrumb = dynamic(() => import("../../Breadcrumb"));
-import Link from "next/link";
-
-
+import DepartureTrips from '@/components/DepartureTrips';
+import { BASE_URL } from '@/lib/constants';
+import { Media, UrlInfo } from '@/types';
+import dynamic from 'next/dynamic';
+const PageBanner = dynamic(() => import('../../Banners/PageBanner'));
+const Breadcrumb = dynamic(() => import('../../Breadcrumb'));
+import Link from 'next/link';
 
 interface ChildItem {
   id: number;
@@ -39,13 +37,13 @@ interface ArticleProps {
 }
 
 function limitWords(text: string, wordLimit: number): string {
-  if (!text || typeof text !== "string") return "";
+  if (!text || typeof text !== 'string') return '';
 
   const words = text.trim().split(/\s+/);
   if (words.length <= wordLimit) {
     return text;
   }
-  return words.slice(0, wordLimit).join(" ") + "...";
+  return words.slice(0, wordLimit).join(' ') + '...';
 }
 
 export default function Article({ data }: ArticleProps) {
@@ -53,12 +51,23 @@ export default function Article({ data }: ArticleProps) {
     data.content;
 
   const breadcrumbs = data?.breadcrumbs;
-  const breadcrumbsData =
-    breadcrumbs && breadcrumbs[Object.keys(breadcrumbs)[0]];
+
+  const breadcrumbsData = breadcrumbs
+    ? Object.values(breadcrumbs).map(item => ({
+        id: item.id,
+        title: item.title,
+        slug: item.url_slug,
+      }))
+    : undefined;
 
   return (
     <>
-      {banner && <PageBanner renderData={banner} pageTitle={page_title} />}
+      {banner && (
+        <PageBanner
+          renderData={banner}
+          pageTitle={page_title}
+        />
+      )}
 
       <section className="common-box pb-0 pt-0">
         <div className="container">
@@ -76,8 +85,7 @@ export default function Article({ data }: ArticleProps) {
               className="common-module"
               dangerouslySetInnerHTML={{
                 __html: page_description,
-              }}
-            ></article>
+              }}></article>
 
             {children?.length > 0 && (
               <ul className="grid grid-cols-3 gap-6 common-module">
@@ -98,13 +106,11 @@ export default function Article({ data }: ArticleProps) {
                           dangerouslySetInnerHTML={{
                             __html: text,
                           }}
-                          className="text-md text-headings/80"
-                        ></div>
+                          className="text-md text-headings/80"></div>
 
                         <Link
                           className="font-semibold inline-block capitalize mt-3 text-sm text-primary text-pretty tracking-wide  hover:uderline hover:decoration-primary group"
-                          href={BASE_URL + item.urlinfo.url_slug}
-                        >
+                          href={BASE_URL + item.urlinfo.url_slug}>
                           Explore
                           <svg className="h-3 w-[0] transition-all inline-block ml-1 group-hover:w-3">
                             <use
@@ -122,11 +128,6 @@ export default function Article({ data }: ArticleProps) {
           </div>
         </div>
       </section>
-      {urlinfo.url_slug === "fixed-departure" && (
-        <>
-          <DepartureTrips />
-        </>
-      )}
     </>
   );
 }

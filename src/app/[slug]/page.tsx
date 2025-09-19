@@ -18,7 +18,7 @@ interface Meta {
 // FIX: Added the 'url_title' property to match the stricter type in the Category component.
 interface UrlInfo {
   url_slug: string;
-  url_title: string; // This property was missing
+  url_title: string; 
   canonical: string | null;
   url_index?: number;
 }
@@ -161,7 +161,6 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  // ... function implementation remains the same
   const params = await props.params;
   const data: PageData | null = await getArticle(params.slug);
 
