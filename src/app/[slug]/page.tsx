@@ -211,10 +211,9 @@ export default async function Page(props: {
   const { page_type, content } = data;
 
   // This check ensures that you only try to access author properties specific to blogs
-  const authorName =
-    content.authors.length > 0 ? content.authors[0].name : 'teamhimalaya';
+  const authorName = content.authors ? content.authors[0].name : 'teamhimalaya';
   const authorUrlSlug =
-    content.authors.length > 0 &&
+    content.authors &&
     'urlinfo' in content.authors[0] &&
     'url_slug' in content.authors[0].urlinfo
       ? (content.authors[0] as BlogAuthor).urlinfo.url_slug
@@ -259,7 +258,7 @@ export default async function Page(props: {
 
       {page_type === 'blog' && (
         <Blog
-          data={data as BlogPageData} 
+          data={data as BlogPageData}
           siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
         />
       )}
