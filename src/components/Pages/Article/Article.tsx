@@ -1,24 +1,19 @@
-import DepartureTrips from "@/components/DepartureTrips";
-import { BASE_URL } from "@/lib/constants";
-import { Media, UrlInfo } from "@/types";
-import dynamic from "next/dynamic";
-const PageBanner = dynamic(() => import("../../Banners/PageBanner"));
-const Breadcrumb = dynamic(() => import("../../Breadcrumb"));
-import Link from "next/link";
+import { BASE_URL } from '@/lib/constants';
+import dynamic from 'next/dynamic';
+const PageBanner = dynamic(() => import('../../Banners/PageBanner'));
+const Breadcrumb = dynamic(() => import('../../Breadcrumb'));
+import Link from 'next/link';
 
+interface Media {
+  full_path: string;
+  alt_text?: string | null;
+}
 
-
-interface ChildItem {
+interface ArticleChildItem {
   id: number;
   page_title: string;
   page_description: string;
-  urlinfo: UrlInfo;
-}
-
-interface BreadcrumbData {
-  [key: string]: {
-    id: number;
-    title: string;
+  urlinfo: {
     url_slug: string;
   };
 }
@@ -26,26 +21,34 @@ interface BreadcrumbData {
 interface ArticleContent {
   page_title: string;
   page_description: string;
-  urlinfo: UrlInfo;
-  banner: Media | null;
-  children: ChildItem[];
+  urlinfo: {
+    url_slug: string;
+  };
+  banner?: Media | null;
+  children?: ArticleChildItem[];
+}
+
+interface BreadcrumbItem {
+  slug: string;
+  title: string;
 }
 
 interface ArticleProps {
   data: {
     content: ArticleContent;
-    breadcrumbs: BreadcrumbData | null;
+    breadcrumbs?: Record<string, { url_slug: string; title: string }> | null;
   };
 }
 
+
 function limitWords(text: string, wordLimit: number): string {
-  if (!text || typeof text !== "string") return "";
+  if (!text || typeof text !== 'string') return '';
 
   const words = text.trim().split(/\s+/);
   if (words.length <= wordLimit) {
     return text;
   }
-  return words.slice(0, wordLimit).join(" ") + "...";
+  return words.slice(0, wordLimit).join(' ') + '...';
 }
 
 export default function Article({ data }: ArticleProps) {
@@ -53,12 +56,22 @@ export default function Article({ data }: ArticleProps) {
     data.content;
 
   const breadcrumbs = data?.breadcrumbs;
-  const breadcrumbsData =
-    breadcrumbs && breadcrumbs[Object.keys(breadcrumbs)[0]];
+
+  const breadcrumbsData: BreadcrumbItem[] | undefined = breadcrumbs
+    ? Object.keys(breadcrumbs).map(key => ({
+        slug: breadcrumbs[key].url_slug,
+        title: breadcrumbs[key].title,
+      }))
+    : undefined;
 
   return (
     <>
-      {banner && <PageBanner renderData={banner} pageTitle={page_title} />}
+      {banner && (
+        <PageBanner
+          renderData={banner}
+          pageTitle={page_title}
+        />
+      )}
 
       <section className="common-box pb-0 pt-0">
         <div className="container">
@@ -76,10 +89,9 @@ export default function Article({ data }: ArticleProps) {
               className="common-module"
               dangerouslySetInnerHTML={{
                 __html: page_description,
-              }}
-            ></article>
+              }}></article>
 
-            {children?.length > 0 && (
+            {children && children.length > 0 && (
               <ul className="grid grid-cols-3 gap-6 common-module">
                 {children.map((item, idx) => {
                   const text = limitWords(item.page_description, 20);
@@ -98,13 +110,11 @@ export default function Article({ data }: ArticleProps) {
                           dangerouslySetInnerHTML={{
                             __html: text,
                           }}
-                          className="text-md text-headings/80"
-                        ></div>
+                          className="text-md text-headings/80"></div>
 
                         <Link
                           className="font-semibold inline-block capitalize mt-3 text-sm text-primary text-pretty tracking-wide  hover:uderline hover:decoration-primary group"
-                          href={BASE_URL + item.urlinfo.url_slug}
-                        >
+                          href={BASE_URL + item.urlinfo.url_slug}>
                           Explore
                           <svg className="h-3 w-[0] transition-all inline-block ml-1 group-hover:w-3">
                             <use
@@ -122,11 +132,6 @@ export default function Article({ data }: ArticleProps) {
           </div>
         </div>
       </section>
-      {urlinfo.url_slug === "fixed-departure" && (
-        <>
-          <DepartureTrips />
-        </>
-      )}
     </>
   );
 }

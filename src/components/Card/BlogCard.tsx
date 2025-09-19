@@ -1,31 +1,56 @@
-import Image from "next/image";
-import Link from "next/link";
-import { BASE_URL, BLOG_BASE_URL, IMAGE_URL } from "@/lib/constants";
-import { Globe, User } from "lucide-react";
-import { formatDate } from "@/lib/dateFormatter";
-import React from "react";
-import { BlogItem } from "@/types";
-import { cn } from "@/lib/utils";
+import Image from 'next/image';
+import Link from 'next/link';
+import { BASE_URL, BLOG_BASE_URL, IMAGE_URL } from '@/lib/constants';
+import { formatDate } from '@/lib/dateFormatter';
+import React from 'react';
+import { cn } from '@/lib/utils';
 
+interface UrlInfo {
+  url_slug: string;
+  url_title?: string | null; 
+}
 
+interface Media {
+  full_path: string;
+  alt_text?: string | null;
+}
 
+interface Category {
+  urlinfo: UrlInfo;
+  title: string;
+}
 
+interface Author {
+  name: string;
+}
+
+export interface BlogItem {
+  title: string;
+  featured?: Media | null;
+  blog_date: string;
+  urlinfo: UrlInfo;
+  categories?: Category[];
+  authors?: Author[];
+}
 
 interface BlogCardProps {
   blogData: BlogItem;
   className?: string;
-  autherPage?: boolean
+  autherPage?: boolean;
 }
 
 export default function BlogCard({ blogData, className }: BlogCardProps) {
   const { title, featured, blog_date, urlinfo, categories, authors } = blogData;
   return (
-    <div className={cn('item transation-all rounded-md overflow-hidden group', className)}>
+    <div
+      className={cn(
+        'item transation-all rounded-md overflow-hidden group',
+        className
+      )}>
       <figure className="relative ">
         <Link
           href={`${BLOG_BASE_URL}${urlinfo?.url_slug}`}
-          className="image-slot rounded overflow-hidden before:pt-[71.1666666667%]"
-        >
+          className="image-slot rounded overflow-hidden before:pt-[71.1666666667%]">
           {featured && (
             <Image
               src={IMAGE_URL + featured.full_path}
@@ -44,8 +69,7 @@ export default function BlogCard({ blogData, className }: BlogCardProps) {
             <li>
               <Link
                 href={BASE_URL + categories[0]?.urlinfo?.url_slug}
-                className="underline hover:decoration-primary text-muted font-medium"
-              >
+                className="underline hover:decoration-primary text-muted font-medium">
                 {categories[0]?.urlinfo.url_title}
               </Link>
             </li>
@@ -54,7 +78,7 @@ export default function BlogCard({ blogData, className }: BlogCardProps) {
           {categories && categories[0] && (
             <li className="categories">
               <span className="text-muted">
-                {formatDate(blog_date, "dd MMM, yyyy")}
+                {formatDate(blog_date, 'dd MMM, yyyy')}
               </span>
             </li>
           )}
@@ -63,12 +87,10 @@ export default function BlogCard({ blogData, className }: BlogCardProps) {
         <h3 className="line-clamp-2 font-bold text-lg md:text-xl leading-[1.2]">
           <Link
             href={`${BLOG_BASE_URL}${urlinfo?.url_slug}`}
-            className="text-headings transition-color  hover:underline hover:decoration-primary"
-          >
+            className="text-headings transition-color  hover:underline hover:decoration-primary">
             {title}
           </Link>
         </h3>
-
       </figcaption>
     </div>
   );

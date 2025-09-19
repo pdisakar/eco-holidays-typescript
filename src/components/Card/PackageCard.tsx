@@ -1,10 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { BASE_URL, IMAGE_URL, PACKAGE_BASE_URL } from "@/lib/constants";
-import { Media, UrlInfo } from "@/types";
+import Image from 'next/image';
+import Link from 'next/link';
+import { BASE_URL, IMAGE_URL, PACKAGE_BASE_URL } from '@/lib/constants';
 
+interface Media {
+  full_path: string;
+  alt_text?: string | null;
+}
 
-
+interface UrlInfo {
+  url_slug: string;
+  url_title?: string;
+  canonical?: string;
+  url_index?: number;
+}
 
 interface Destination {
   urlinfo: UrlInfo;
@@ -17,13 +25,13 @@ interface Testimonial {
 
 interface PackageData {
   package_title: string;
-  featured?: Media;
+  featured?: Media | null;
   package_discount?: number;
   package_duration: number;
   package_duration_type: string;
   urlinfo: UrlInfo;
   testimonials?: Testimonial[];
-  additional_field_1?: string;
+  additional_field_1?: string | null;
   group_default_price: number;
   id: string | number;
   grade?: string;
@@ -33,12 +41,15 @@ interface PackageData {
   destination?: Destination;
 }
 
-interface PackageCardProps {
+export interface PackageCardProps {
   packageData: PackageData;
   isSuggested?: boolean;
 }
 
-export default function PackageCard({ packageData, isSuggested }: PackageCardProps) {
+export default function PackageCard({
+  packageData,
+  isSuggested,
+}: PackageCardProps) {
   const {
     package_title,
     featured,
@@ -64,23 +75,28 @@ export default function PackageCard({ packageData, isSuggested }: PackageCardPro
   const renderAdditionalField = () => {
     let bgColor: string, iconHref: string;
     switch (additional_field_1) {
-      case "Best Price":
-        bgColor = "bg-secondary";
-        iconHref = "tagsFill";
+      case 'Best Price':
+        bgColor = 'bg-secondary';
+        iconHref = 'tagsFill';
         break;
-      case "Group Tours":
-        bgColor = "bg-primary";
-        iconHref = "peopleFill";
+      case 'Group Tours':
+        bgColor = 'bg-primary';
+        iconHref = 'peopleFill';
         break;
       default:
-        bgColor = "bg-warning";
-        iconHref = "starFill";
+        bgColor = 'bg-warning';
+        iconHref = 'starFill';
     }
     return (
       <div className={`${statusClasses}`}>
-        <svg className="bg-danger text-white rounded-full inline-block" height={18} width={18}><use xlinkHref="/icons.svg#info-i" /></svg>
-        {additional_field_1 === "Pravite Trip"
-          ? "Private Trip"
+        <svg
+          className="bg-danger text-white rounded-full inline-block"
+          height={18}
+          width={18}>
+          <use xlinkHref="/icons.svg#info-i" />
+        </svg>
+        {additional_field_1 === 'Pravite Trip'
+          ? 'Private Trip'
           : additional_field_1}
       </div>
     );
@@ -89,12 +105,15 @@ export default function PackageCard({ packageData, isSuggested }: PackageCardPro
   const renderImage = (className: string) => (
     <Link
       href={PACKAGE_BASE_URL + slug}
-      className={`rounded-[20px] shadow-[0_5px_10px] shadow-black/15 image-slot before:pt-[66.6666666667%] ${className}`}
-    >
+      className={`rounded-[20px] shadow-[0_5px_10px] shadow-black/15 image-slot before:pt-[66.6666666667%] ${className}`}>
       {featured && (
         <Image
           src={`${IMAGE_URL}${featured.full_path}`}
-          alt={featured.alt_text ? featured.alt_text ?? package_title : package_title}
+          alt={
+            featured.alt_text
+              ? featured.alt_text ?? package_title
+              : package_title
+          }
           width={372}
           height={320}
           className="object-cover transition-transform group-hover:scale-110"
@@ -108,46 +127,43 @@ export default function PackageCard({ packageData, isSuggested }: PackageCardPro
   return (
     <div className="item rounded-md h-full group">
       <figure className="relative mx-[-1px] mt-[-1px]">
-        {renderImage("")}
-
+        {renderImage('')}
       </figure>
       <figcaption className="pt-4 px-1">
         <div className="caption-header min-h-[60px]">
-
           <h3 className="line-clamp-2 font-bold text-[1.125rem] md:text-lg leading-[1.2]">
             <Link
               href={PACKAGE_BASE_URL + slug}
-              className="text-headings transition-color  hover:underline hover:decoration-primary"
-            >
+              className="text-headings transition-color  hover:underline hover:decoration-primary">
               {urlinfo.url_title}
             </Link>
           </h3>
-          <ul
-            className="flex items-center gap-x-2 text-muted text-xs font-medium mt-1">
+          <ul className="flex items-center gap-x-2 text-muted text-xs font-medium mt-1">
             <li className="duration inline-flex items-center gap-x-1.5 leading-[1]">
-              {`${package_duration} ${package_duration_type === "days" ? 'Days' : package_duration_type}`}
+              {`${package_duration} ${
+                package_duration_type === 'days'
+                  ? 'Days'
+                  : package_duration_type
+              }`}
             </li>
             <li>|</li>
-            {total_testimonials > 0 &&
+            {total_testimonials > 0 && (
               <li className="duration inline-flex items-center gap-x-1">
                 <i className="ratings__5 scale-[0.95]"></i>
                 <span>
                   (
-                  {`${total_testimonials <= 9 ? "0" : " "
-                    }${total_testimonials} reviews`}
+                  {`${
+                    total_testimonials <= 9 ? '0' : ' '
+                  }${total_testimonials} reviews`}
                   )
                 </span>
-              </li>}
+              </li>
+            )}
           </ul>
-
         </div>
-
 
         <div className="flex leading-[1] justify-between items-center">
           <div className="package-cost font-secondary flex items-center gap-x-1.5">
-            {/* <span className="text-muted text-xxs font-medium tracking-wide block mb-0.5">
-              Starting From
-            </span> */}
             <span className="text-secondary font-bold  text-[1.125rem] sm:text-lg">
               US${group_default_price}
             </span>
@@ -160,9 +176,7 @@ export default function PackageCard({ packageData, isSuggested }: PackageCardPro
               className="font-semibold h-8 w-8 inline-flex justify-center items-center capitalize text-sm text-primary bg-primary/10 rounded-full  text-pretty tracking-wide  hover:uderline hover:decoration-primary group-hover:bg-primary group-hover:text-white transition-all duration-150 ease-linear"
               aria-label={`Explore ${package_title}`}
               title={`Explore ${package_title}`}
-              href={BASE_URL + urlinfo.url_slug}
-            >
-
+              href={BASE_URL + urlinfo.url_slug}>
               <svg className="h-3 w-3 inline-block">
                 <use
                   xlinkHref="/icons.svg#arrow-short-right"
@@ -173,8 +187,7 @@ export default function PackageCard({ packageData, isSuggested }: PackageCardPro
           </div>
         </div>
 
-        {
-          additional_field_1 && (<> {renderAdditionalField()}</>)}
+        {additional_field_1 && <> {renderAdditionalField()}</>}
       </figcaption>
     </div>
   );
