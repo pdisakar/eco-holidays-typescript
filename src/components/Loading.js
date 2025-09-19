@@ -1,14 +1,6 @@
 "use client"
 import * as React from "react";
-
-interface LoadingProps {
-  title?: string;
-  titleId?: string;
-  [x: string]: any; 
-}
-
-
-const Loading = ({ title, titleId, ...props }: LoadingProps) => (
+const Loading = ({ title, titleId, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 32 32"
@@ -16,12 +8,10 @@ const Loading = ({ title, titleId, ...props }: LoadingProps) => (
     height="1em"
     aria-labelledby={titleId}
     fill="currentColor"
-    {...props}>
+    {...props}
+  >
     {title ? <title id={titleId}>{title}</title> : null}
-    <circle
-      transform="translate(8)"
-      cy={16}
-      r={0}>
+    <circle transform="translate(8)" cy={16} r={0}>
       <animate
         attributeName="r"
         values="0; 4; 0; 0"
@@ -33,10 +23,7 @@ const Loading = ({ title, titleId, ...props }: LoadingProps) => (
         calcMode="spline"
       />
     </circle>
-    <circle
-      transform="translate(16)"
-      cy={16}
-      r={0}>
+    <circle transform="translate(16)" cy={16} r={0}>
       <animate
         attributeName="r"
         values="0; 4; 0; 0"
@@ -48,10 +35,7 @@ const Loading = ({ title, titleId, ...props }: LoadingProps) => (
         calcMode="spline"
       />
     </circle>
-    <circle
-      transform="translate(24)"
-      cy={16}
-      r={0}>
+    <circle transform="translate(24)" cy={16} r={0}>
       <animate
         attributeName="r"
         values="0; 4; 0; 0"

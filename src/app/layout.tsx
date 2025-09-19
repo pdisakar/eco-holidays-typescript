@@ -1,28 +1,27 @@
+
 import '@/styles/main.scss';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { Roboto, Rubik } from 'next/font/google';
-import NextTopLoader from 'nextjs-toploader';
-import { getGlobalData, getOptionsData } from '@/services/network_requests';
-import { BASE_URL } from '@/lib/constants';
-import Header from '@/layouts/Header';
-import Footer from '@/layouts/Footer';
-import { Toaster } from '@/components/ui/toaster';
-import { GlobalDataProvider } from '@/context/globalContext';
-import type { Metadata } from 'next';
-import Script from 'next/script';
+import { Roboto, Rubik } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
+import { getGlobalData, getOptionsData } from "@/services/network_requests";
+import { BASE_URL } from "@/lib/constants";
+import Header from "@/layouts/Header";
+import Footer from "@/layouts/Footer";
+import { Toaster } from "@/components/ui/toaster";
+import { GlobalDataProvider } from "@/context/globalContext";
+import type { Metadata } from "next";
 
 const rubik = Rubik({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--secondary',
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--secondary",
 });
 
 const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  display: 'swap',
-  variable: '--primary',
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
+  variable: "--primary",
 });
 
 export const metadata: Metadata = {
@@ -38,44 +37,44 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'standard',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "standard",
+      "max-snippet": -1,
     },
   },
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'Book Guided Tours/blog and Travel Category',
+    statusBarStyle: "default",
+    title: "Book Guided Tours/blog and Travel Category",
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     creator: process.env.TWITTER_USER_NAME,
   },
   verification: {
-    google: 'google',
-    yandex: 'yandex',
-    yahoo: 'yahoo',
+    google: "google",
+    yandex: "yandex",
+    yahoo: "yahoo",
   },
   icons: {
     icon: [
       {
         url: `${BASE_URL}favicon-32x32.png`,
-        sizes: '32x32',
-        type: 'image/png',
+        sizes: "32x32",
+        type: "image/png",
       },
       {
         url: `${BASE_URL}favicon-16x16.png`,
-        sizes: '16x16',
-        type: 'image/png',
+        sizes: "16x16",
+        type: "image/png",
       },
     ],
     apple: [
       {
         url: `${BASE_URL}apple-touch-icon.png`,
-        sizes: '180x180',
-        type: 'image/png',
+        sizes: "180x180",
+        type: "image/png",
       },
     ],
   },
@@ -91,56 +90,57 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     getOptionsData(),
   ]);
 
+
   const LocalBusiness = {
-    '@context': 'https://schema.org',
-    '@type': 'TravelAgency',
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
     name: process.env.COMPANY_NAME,
-    image: process.env.CANONICAL_BASE + 'logo.png',
-    '@id': process.env.CANONICAL_BASE,
+    image: process.env.CANONICAL_BASE + "logo.png",
+    "@id": process.env.CANONICAL_BASE,
     url: process.env.CANONICAL_BASE,
     telephone: data.phone,
     address: {
-      '@type': 'PostalAddress',
+      "@type": "PostalAddress",
       streetAddress: data.address,
-      addressLocality: 'Kathmandu',
-      addressRegion: 'Bagmati',
-      postalCode: '44600',
-      addressCountry: 'NP',
+      addressLocality: "Kathmandu",
+      addressRegion: "Bagmati",
+      postalCode: "44600",
+      addressCountry: "NP",
     },
     geo: {
-      '@type': 'GeoCoordinates',
+      "@type": "GeoCoordinates",
       latitude: 27.72081724283795,
       longitude: 85.31023775483172,
     },
     potentialAction: {
-      '@type': 'ReviewAction',
-      name: 'TripAdvisor',
+      "@type": "ReviewAction",
+      name: "TripAdvisor",
       target:
-        'https://www.tripadvisor.com/Attraction_Review-g293890-d2619800-Reviews-Adventure_Bound-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html',
+        "https://www.tripadvisor.com/Attraction_Review-g293890-d2619800-Reviews-Adventure_Bound-Kathmandu_Kathmandu_Valley_Bagmati_Zone_Central_Region.html",
     },
     openingHoursSpecification: [
       {
-        opens: '08:00',
-        closes: '18:59',
+        opens: "08:00",
+        closes: "18:59",
         dayOfWeek: [
-          'Sunday',
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
         ],
-        validFrom: '2009-12-23',
-        validThrough: '2028-04-02',
-        '@type': 'OpeningHoursSpecification',
+        validFrom: "2009-12-23",
+        validThrough: "2028-04-02",
+        "@type": "OpeningHoursSpecification",
       },
       {
-        opens: '8:00',
-        closes: '11:00',
-        dayOfWeek: 'Saturday',
-        validFrom: '2009-12-23',
-        validThrough: '2028-04-02',
-        '@type': 'OpeningHoursSpecification',
+        opens: "8:00",
+        closes: "11:00",
+        dayOfWeek: "Saturday",
+        validFrom: "2009-12-23",
+        validThrough: "2028-04-02",
+        "@type": "OpeningHoursSpecification",
       },
     ],
     sameAs: [
@@ -153,26 +153,21 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   };
 
   const Website = {
-    '@context': 'https://schema.org/',
-    '@type': 'WebSite',
+    "@context": "https://schema.org/",
+    "@type": "WebSite",
     name: process.env.COMPANY_NAME,
     url: process.env.CANONICAL_BASE,
     potentialAction: {
-      '@type': 'SearchAction',
+      "@type": "SearchAction",
       target: `${process.env.CANONICAL_BASE}serach?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
+      "query-input": "required name=search_term_string",
     },
   };
 
   return (
-    <html
-      lang="en"
-      className="scroll-p-20 scroll-smooth">
+    <html lang="en" className="scroll-p-20 scroll-smooth">
       <head>
-        <link
-          rel="manifest"
-          href={`${BASE_URL}manifest.json`}
-        />
+        <link rel="manifest" href={`${BASE_URL}manifest.json`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(LocalBusiness) }}
@@ -184,10 +179,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body
         suppressHydrationWarning
-        className={`${roboto.variable} ${rubik.variable} antialiased`}>
-        <GlobalDataProvider
-          globalData={data}
-          optionsData={optionsData}>
+        className={`${roboto.variable} ${rubik.variable} antialiased`}
+      >
+        <GlobalDataProvider globalData={data} optionsData={optionsData}>
           <div id="wrapper">
             <NextTopLoader
               color="#04A681"
@@ -203,12 +197,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <main role="main">{children}</main>
             <Footer globalData={data} />
           </div>
-          <Toaster
-            swipeDirection="up"
-            duration={3000}
-          />
+          <Toaster swipeDirection="up" duration={3000} />
         </GlobalDataProvider>
-      </body>
+          </body>
     </html>
   );
 }

@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 const redirection_data = [
   {
     source: '/testimonial',
@@ -35,12 +35,10 @@ const redirection_data = [
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ["ilucide-react"],
+    optimizePackageImports: ['ilucide-react'],
   },
-  serverExternalPackages: ["node-html-parser"],
-  compiler: {
-    removeConsole: true,
-  },
+  serverExternalPackages: ['node-html-parser'],
+
   logging: {
     fetches: {
       fullUrl: true,
@@ -49,9 +47,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+
   images: {
     dangerouslyAllowSVG: true,
     //unoptimized: true,
@@ -59,23 +55,24 @@ const nextConfig: NextConfig = {
 
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "api.ecoholidaysnepal.com",
+        protocol: 'https',
+        hostname: 'api.ecoholidaysnepal.com',
       },
     ],
-    formats: ["image/webp", "image/avif"],
+    formats: ['image/webp', 'image/avif'],
     deviceSizes: [320, 420, 768, 1024, 1200, 1920],
     minimumCacheTTL: 60,
   },
   async redirects() {
     const response = await fetch(
-      `${process.env.PRODUCTION_SERVER}/urlredirects`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        sitekey: `${process.env.SITE_KEY}`
-      },
-    }
+      `${process.env.PRODUCTION_SERVER}/urlredirects`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          sitekey: `${process.env.SITE_KEY}`,
+        },
+      }
     );
 
     const redirection = await response.json();

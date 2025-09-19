@@ -1,37 +1,9 @@
 import { BASE_URL, IMAGE_URL } from "@/lib/constants";
+import { CategoryItem } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Media {
-  full_path: string;
-  alt_text?: string | null;
-}
-
-interface UrlInfo {
-  url_slug: string;
-  url_title?: string;
-  canonical?: string;
-  url_index?: number;
-}
-
-interface CategoryItem {
-  id: string | number;
-  type_id: number;
-  parent_id?: string | number;
-  title: string;
-  description?: string;
-  urlinfo: UrlInfo;
-  banner?: Media;
-  featured?: Media | null;
-  children?: CategoryItem[];
-  extra_field_1?: string | null;
-  extra_field_2?: string | null;
-  extra_field_3?: string | null;
-  total_packages?: number;
-  all_packages?: number;
-}
-
-export interface CategoryCardProps {
+interface CategoryCardProps {
   categoryData: CategoryItem;
   isFeatured?: boolean;
 }
