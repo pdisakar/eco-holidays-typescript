@@ -7,20 +7,19 @@ import { getArticle, getStaticRoutes } from '@/services/network_requests';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Media } from '@/types'; // FIX: Import the shared Media type
-
-// FIX: All local interface definitions that can be shared have been removed
-// in favor of a centralized type definition file (e.g., '@/types').
-// For this example, we'll redefine them here correctly.
+import { Media, BlogItem, CategoryItem, PackageItem } from '@/types';
 
 interface Meta {
   meta_title: string;
   meta_description: string;
+  meta_keywords: string | null;
 }
 
+// FIX: Added the 'url_title' property to match the stricter type in the Category component.
 interface UrlInfo {
   url_slug: string;
-  canonical?: string;
+  url_title: string; // This property was missing
+  canonical: string | null;
   url_index?: number;
 }
 
@@ -41,7 +40,7 @@ interface GenericContent {
   meta: Meta;
   urlinfo: UrlInfo;
   banner?: Media;
-  authors: (GenericAuthor | BlogAuthor)[]; // Use a union type to accommodate different author structures
+  authors?: (GenericAuthor | BlogAuthor)[];
 }
 
 // Extend GenericContent to include ArticleContent-specific fields
@@ -59,9 +58,9 @@ interface ArticlePageData {
 
 interface CategoryContent extends GenericContent {
   description: string;
-  children: any[];
-  packages: any[];
-  blogs: any[];
+  children: CategoryItem[];
+  packages: PackageItem[];
+  blogs: BlogItem[];
   banner: Media;
 }
 
@@ -81,7 +80,7 @@ interface PackagePageData {
 interface BlogAuthor {
   name: string;
   description: string;
-  avatar?: Media | null; // FIX: Use the imported Media type and allow for null
+  avatar?: Media | null;
   urlinfo: {
     url_slug: string;
     url_title?: string;
@@ -90,7 +89,7 @@ interface BlogAuthor {
 
 interface BlogContentData {
   title: string;
-  abstract: string | null; // Abstract can be null
+  abstract: string | null;
   blog_date: string;
   btag: string[];
   authors: BlogAuthor[];

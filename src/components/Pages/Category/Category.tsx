@@ -1,12 +1,19 @@
-import { BlogItem, CategoryItem, Media, Meta, PackageItem, UrlInfo } from "@/types";
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import {
+  BlogItem,
+  CategoryItem,
+  Media,
+  Meta,
+  PackageItem,
+  UrlInfo,
+} from '@/types';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 
-const BlogCard = dynamic(() => import("@/components/Card/BlogCard"));
-const CategoryCard = dynamic(() => import("@/components/Card/CategoryCard"));
-const PackageCard = dynamic(() => import("@/components/Card/PackageCard"));
-const PageBanner = dynamic(() => import("@/components/Banners/PageBanner"));
-const Breadcrumb = dynamic(() => import("@/components/Breadcrumb"));
+const BlogCard = dynamic(() => import('@/components/Card/BlogCard'));
+const CategoryCard = dynamic(() => import('@/components/Card/CategoryCard'));
+const PackageCard = dynamic(() => import('@/components/Card/PackageCard'));
+const PageBanner = dynamic(() => import('@/components/Banners/PageBanner'));
+const Breadcrumb = dynamic(() => import('@/components/Breadcrumb'));
 
 interface Content {
   title: string;
@@ -21,10 +28,10 @@ interface Content {
 
 interface CategoryProps {
   data: {
-    content: Content,
-    breadcrumbs: BreadcrumbData[][],
+    content: Content;
+    breadcrumbs: BreadcrumbData[][];
   };
-  siteUrl?:string
+  siteUrl?: string;
 }
 
 interface BreadcrumbData {
@@ -32,8 +39,9 @@ interface BreadcrumbData {
   title: string;
 }
 
-// === Main Component ===
 export default function Category({ data }: CategoryProps) {
+  console.log(data);
+
   const { title, description, children, packages, banner, urlinfo, blogs } =
     data.content;
   const hasChildren = useMemo(
@@ -46,16 +54,23 @@ export default function Category({ data }: CategoryProps) {
   );
   const hasBlogs = useMemo(() => blogs && blogs.length > 0, [blogs]);
   const hasDescription = useMemo(
-    () => description && description.trim() !== "",
+    () => description && description.trim() !== '',
     [description]
   );
 
   return (
     <>
-      {banner && <PageBanner renderData={banner} pageTitle={title} />}
+      {banner && (
+        <PageBanner
+          renderData={banner}
+          pageTitle={title}
+        />
+      )}
 
       <div className="common-box pt-0">
-        <div className="container" role="main">
+        <div
+          className="container"
+          role="main">
           <div className="lg:w-9/12 lg:mx-auto">
             <div className="page-title pt-6 lg:pt-0 mb-6">
               {data.breadcrumbs?.[0] && (
@@ -71,8 +86,9 @@ export default function Category({ data }: CategoryProps) {
 
           {hasChildren && (
             <div
-              className={`common-module category ${!hasPackages ? "mb-0" : ""}`}
-            >
+              className={`common-module category ${
+                !hasPackages ? 'mb-0' : ''
+              }`}>
               <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {children.map((itm, idx) => (
                   <li key={idx}>
@@ -84,16 +100,16 @@ export default function Category({ data }: CategoryProps) {
           )}
 
           {hasPackages && (
-            <div className={`common-module ${!hasBlogs ? "mb-0" : ""}`}>
+            <div className={`common-module ${!hasBlogs ? 'mb-0' : ''}`}>
               <div className="package-list">
                 <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
-                  {packages
-                    .filter((p) => p.status !== 0)
-                    .map((itm, idx) => (
-                      <li className="col-lg-4" key={idx}>
-                        <PackageCard packageData={itm} />
-                      </li>
-                    ))}
+                  {packages.map((itm, idx) => (
+                    <li
+                      className="col-lg-4"
+                      key={idx}>
+                      <PackageCard packageData={itm} />
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -126,8 +142,7 @@ export default function Category({ data }: CategoryProps) {
               </div>
               <article
                 className="common-module"
-                dangerouslySetInnerHTML={{ __html: description }}
-              ></article>
+                dangerouslySetInnerHTML={{ __html: description! }}></article>
             </div>
           </div>
         </div>
