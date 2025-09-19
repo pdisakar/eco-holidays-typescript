@@ -32,7 +32,7 @@ export default function Newsletter({ title, subTitle, btnLabel }) {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
     setLoading(false);
   };

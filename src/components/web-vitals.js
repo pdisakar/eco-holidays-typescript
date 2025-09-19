@@ -10,7 +10,7 @@ export function WebVitals() {
     //   })
     useReportWebVitals((metric) => {
         //const body = JSON.stringify(metric)
-        console.log(metric);
+        // console.log(metric);
         
         // switch (metric.name) {
         //     case 'FCP': {

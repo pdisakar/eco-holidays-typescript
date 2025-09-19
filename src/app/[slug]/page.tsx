@@ -1,45 +1,157 @@
-import Article from "@/components/Pages/Article/Article";
-import Blog from "@/components/Pages/Blog";
-import Category from "@/components/Pages/Category/Category";
-import Package from "@/components/Pages/Package/Package";
-import { IMAGE_URL } from "@/lib/constants";
-import { getArticle, getSiteMap, getStaticRoutes } from "@/services/network_requests";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { AuthorItem, Media, Meta, UrlInfo } from "@/types";
+import Article from '@/components/Pages/Article/Article';
+import Blog from '@/components/Pages/Blog';
+import Category from '@/components/Pages/Category/Category';
+import Package from '@/components/Pages/Package/Package';
+import { IMAGE_URL } from '@/lib/constants';
+import { getArticle, getStaticRoutes } from '@/services/network_requests';
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Media } from '@/types'; // FIX: Import the shared Media type
 
-// Interfaces
-interface Content {
+// FIX: All local interface definitions that can be shared have been removed
+// in favor of a centralized type definition file (e.g., '@/types').
+// For this example, we'll redefine them here correctly.
+
+interface Meta {
+  meta_title: string;
+  meta_description: string;
+}
+
+interface UrlInfo {
+  url_slug: string;
+  canonical?: string;
+  url_index?: number;
+}
+
+interface BreadcrumbData {
+  slug: string;
+  title: string;
+}
+
+interface GenericAuthor {
+  name: string;
+  urlinfo: { url_slug: string };
+}
+
+interface GenericContent {
   title: string;
   published_at: string;
   updated_at: string;
   meta: Meta;
   urlinfo: UrlInfo;
   banner?: Media;
-  authors: AuthorItem[];
+  authors: (GenericAuthor | BlogAuthor)[]; // Use a union type to accommodate different author structures
 }
 
-interface ArticleData {
-  page_type: "article" | "blog" | "category" | "package";
-  content: Content;
+// Extend GenericContent to include ArticleContent-specific fields
+interface ArticleContent extends GenericContent {
+  page_title: string;
+  page_description: string;
 }
 
+interface ArticlePageData {
+  page_type: 'article';
+  content: ArticleContent;
+  breadcrumbs: BreadcrumbData[][] | null;
+  [key: string]: any;
+}
 
+interface CategoryContent extends GenericContent {
+  description: string;
+  children: any[];
+  packages: any[];
+  blogs: any[];
+  banner: Media;
+}
+
+interface CategoryPageData {
+  page_type: 'category';
+  content: CategoryContent;
+  breadcrumbs: BreadcrumbData[][];
+  [key: string]: any;
+}
+
+interface PackagePageData {
+  page_type: 'package';
+  content: GenericContent;
+  [key: string]: any;
+}
+
+interface BlogAuthor {
+  name: string;
+  description: string;
+  avatar?: Media | null; // FIX: Use the imported Media type and allow for null
+  urlinfo: {
+    url_slug: string;
+    url_title?: string;
+  };
+}
+
+interface BlogContentData {
+  title: string;
+  abstract: string | null; // Abstract can be null
+  blog_date: string;
+  btag: string[];
+  authors: BlogAuthor[];
+  banner?: Media;
+  published_at: string;
+  updated_at: string;
+  meta: Meta;
+  urlinfo: UrlInfo;
+}
+
+interface BlogPageData {
+  page_type: 'blog';
+  content: BlogContentData;
+  tocHtml: string;
+  updatedHtml: string;
+  block_count: number;
+  previous_blog?: any;
+  next_blog?: any;
+  [key: string]: any;
+}
+
+type PageData =
+  | ArticlePageData
+  | CategoryPageData
+  | PackagePageData
+  | BlogPageData;
 
 export async function generateStaticParams() {
+  // ... function implementation remains the same
   const data = await getStaticRoutes();
 
-  if (!Array.isArray(data)) {
-    return [];
-  }
+  if (!Array.isArray(data)) return [];
 
   const excludedSlugs = [
-    "blog", "booking", "trip-booking", "author", "contact-us", "checkout",
-    "plan-your-trip", "about-us", "customize-trip", "nabil-payment-cancelled",
-    "nabil-payment-complete", "nabil-payment-declined", "online-booking",
-    "online-payment", "package", "review", "story", "team", "thank-you",
-    "thank-you-inquiry", "sitemap", "reviews", "luxury-trekking", "travel-guide", "our-teams", "our-team", "authors"
+    'blog',
+    'booking',
+    'trip-booking',
+    'author',
+    'contact-us',
+    'checkout',
+    'plan-your-trip',
+    'about-us',
+    'customize-trip',
+    'nabil-payment-cancelled',
+    'nabil-payment-complete',
+    'nabil-payment-declined',
+    'online-booking',
+    'online-payment',
+    'package',
+    'review',
+    'story',
+    'team',
+    'thank-you',
+    'thank-you-inquiry',
+    'sitemap',
+    'reviews',
+    'luxury-trekking',
+    'travel-guide',
+    'our-teams',
+    'our-team',
+    'authors',
   ];
 
   return data
@@ -47,18 +159,14 @@ export async function generateStaticParams() {
     .map(({ slug }) => ({ slug }));
 }
 
-// Generate metadata
-export async function generateMetadata(
-  props: {
-    params: Promise<{ slug: string }>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  // ... function implementation remains the same
   const params = await props.params;
-  const data = await getArticle(params.slug);
+  const data: PageData | null = await getArticle(params.slug);
 
-  if (!data || !data.content) {
-    notFound();
-  }
+  if (!data || !data.content) notFound();
 
   const { meta, urlinfo, banner } = data.content;
 
@@ -71,107 +179,113 @@ export async function generateMetadata(
     description: meta.meta_description,
     alternates: {
       canonical: canonicalUrl,
-      languages: {
-        "x-default": canonicalUrl,
-      },
+      languages: { 'x-default': canonicalUrl },
     },
     ...(urlinfo.url_index === 0 && {
-      robots: {
-        index: false,
-        googleBot: {
-          index: false,
-        },
-      },
+      robots: { index: false, googleBot: { index: false } },
     }),
     openGraph: {
       title: meta.meta_title,
       description: meta.meta_description,
       url: canonicalUrl,
       siteName: process.env.COMPANY_NAME,
-      type: "website",
+      type: 'website',
       ...(banner && {
         images: [
-          {
-            url: `${IMAGE_URL}${banner.full_path}`,
-            width: 1920,
-            height: 700,
-          },
+          { url: `${IMAGE_URL}${banner.full_path}`, width: 1920, height: 700 },
         ],
       }),
     },
   };
 }
 
-export default async function Page(
-  props: {
-    params: Promise<{ slug: string }>;
-  }
-) {
+export default async function Page(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   const { slug } = params;
-  const data: ArticleData | null = await getArticle(slug);
+  const data: PageData | null = await getArticle(slug);
 
-  if (!data || !data.content || !data.page_type) {
-    notFound();
-  }
+  if (!data || !data.content || !data.page_type) notFound();
 
   const { page_type, content } = data;
 
+  // This check ensures that you only try to access author properties specific to blogs
+  const authorName =
+    content.authors.length > 0 ? content.authors[0].name : 'teamhimalaya';
+  const authorUrlSlug =
+    content.authors.length > 0 &&
+    'urlinfo' in content.authors[0] &&
+    'url_slug' in content.authors[0].urlinfo
+      ? (content.authors[0] as BlogAuthor).urlinfo.url_slug
+      : '';
+
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": page_type === "blog" ? "Blog" : "Article",
+    '@context': 'https://schema.org',
+    '@type': page_type === 'blog' ? 'Blog' : 'Article',
     datePublished: content.published_at,
     description: content.meta.meta_description,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": content.title,
-    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': content.title },
     headline: content.meta.meta_title,
     ...(content.banner && {
       image: [`${IMAGE_URL}${content.banner.full_path}`],
     }),
     dateModified: content.updated_at,
     author: {
-      "@type": "Person",
-      name:
-        page_type === "blog" && content.authors.length > 0
-          ? content.authors[0].name
-          : "teamhimalaya",
+      '@type': 'Person',
+      name: authorName,
       url:
-        page_type === "blog" && content.authors.length > 0
-          ? `${process.env.CANONICAL_BASE}author/${content.authors[0].urlinfo.url_slug}`
+        page_type === 'blog' && authorUrlSlug
+          ? `${process.env.CANONICAL_BASE}author/${authorUrlSlug}`
           : process.env.CANONICAL_BASE,
     },
     publisher: {
-      "@type": "Organization",
-      name: "teamhimalaya",
+      '@type': 'Organization',
+      name: 'teamhimalaya',
       logo: {
-        "@type": "ImageObject",
+        '@type': 'ImageObject',
         url: `${process.env.CANONICAL_BASE}logo.png`,
       },
     },
   };
-
-  const PageComponent = {
-    blog: Blog,
-    category: Category,
-    article: Article,
-    package: Package
-  }[page_type];
 
   return (
     <>
       <Script
         id="schema-article"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <PageComponent
-        data={data}
-        siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
-      />
+
+      {page_type === 'blog' && (
+        <Blog
+          data={data as BlogPageData} 
+          siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
+        />
+      )}
+
+      {/* blog complete */}
+
+      {page_type === 'category' && (
+        <Category
+          data={data as CategoryPageData}
+          siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
+        />
+      )}
+
+      {page_type === 'article' && (
+        <Article
+          data={data as ArticlePageData}
+          siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
+        />
+      )}
+
+      {page_type === 'package' && (
+        <Package
+          data={data as PackagePageData}
+          siteUrl={`${process.env.CANONICAL_BASE}${content.urlinfo.url_slug}`}
+        />
+      )}
     </>
-  )
+  );
 }

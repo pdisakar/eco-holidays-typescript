@@ -3,17 +3,15 @@ import { Media } from "@/types";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 
-// Define the props interface for the PageBanner component.
 interface PageBannerProps {
-  children?: ReactNode; // 'children' can be any valid React node.
-  renderData: Media; // 'renderData' is a required prop of type RenderData.
-  pageTitle: string; // 'pageTitle' is a required string.
-  subTitle?: string; // 'subTitle' is an optional string.
-  defaultBanner?: string; // 'defaultBanner' is an optional string.
-  bannerImage?: string; // 'bannerImage' is an optional string.
+  children?: ReactNode; 
+  renderData: Media; 
+  pageTitle: string; 
+  subTitle?: string;
+  defaultBanner?: string; 
+  bannerImage?: string; 
 }
 
-// Convert the component to TSX by adding the props interface.
 export default function PageBanner({
   children,
   renderData,

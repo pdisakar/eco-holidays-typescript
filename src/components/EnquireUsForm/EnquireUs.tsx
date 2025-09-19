@@ -101,7 +101,7 @@ export default function EnquireUs({
         ...(packages && { trip_id: parseInt((form.elements.namedItem("trip_id") as HTMLSelectElement).value) }),
       };
 
-      console.log(data);
+      // console.log(data);
 
 
       const res = await fetch(`${PRODUCTION_SERVER}/contactmessage`, {

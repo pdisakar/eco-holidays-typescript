@@ -329,7 +329,7 @@ export async function getArticle(query: string) {
 
   const { page_type, content } = result.data.data;
 
-  console.log(result.data.data);
+  // console.log(result.data.data);
   
 
   if (page_type === "blog") {
@@ -599,7 +599,7 @@ interface SiteMapResponse {
 export async function getSiteMap() {
   const result = await fetchApiData<SiteMapResponse>(`/sitemap`);
   if ("error" in result) return result;
-  console.log(result.data.data.blogs);
+  // console.log(result.data.data.blogs);
 
   return result.data.data;
 }
